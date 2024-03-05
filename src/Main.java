@@ -1,7 +1,6 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
 public class Main {
 
     private static String[][] maze;
@@ -12,5 +11,10 @@ public class Main {
 
     public static void main(String[] args) {
         maze = MazeSolve.getMaze("input/maze");
+        ArrayList<MoveBranch> branches = new ArrayList<MoveBranch>();
+
+        branches.add(new MoveBranch("", 0, 0));
+        branches.get(0).setPossibleMoves(Scout.getPossibleMoves("U", maze, 0, 0));
+
     }
 }
