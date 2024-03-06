@@ -32,7 +32,4 @@ public class MazeSolve {
         }
         return maze;
     }
-
-
-
 }

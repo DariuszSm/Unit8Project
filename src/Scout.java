@@ -20,7 +20,12 @@ public class Scout {
     }
 
     private boolean hasWon(String[][] maze) {
-        return (xPos == maze[0].length-1 && yPos == maze.length-1);
+        System.out.println(maze[0].length);
+        System.out.println(xPos);
+        if (xPos == maze[0].length-1) {
+            return yPos == maze.length - 1;
+        }
+        return false;
     }
 
     public static String getPossibleMoves(String currentDir, String [][] maze, int xPos, int yPos) {
@@ -83,7 +88,12 @@ public class Scout {
             movingSuccessful = move(maze);
 
             possibleResults = getPossibleMoves(currentDir, maze, xPos, yPos);
-            System.out.println(Arrays.deepToString(maze));
+            for (String[] strings : maze) {
+                for (String spot : strings) {
+                    System.out.print(spot);
+                }
+                System.out.println();
+            }
             System.out.println(xPos + ", " + yPos);
             System.out.println(currentDir);
         }
@@ -106,4 +116,9 @@ public class Scout {
     public String getNearPaths() {
         return nearPaths;
     }
+
+    public String getStepsTaken() {
+        return stepsTaken;
+    }
+
 }
