@@ -7,7 +7,7 @@ public class MoveBranch {
     String possibleMovements;
     int xPos;
     int yPos;
-    boolean isPossible;
+    Boolean isPossible;
     boolean checked;
     boolean winning;
 
@@ -20,6 +20,7 @@ public class MoveBranch {
     public void setPossibleMoves(String possibleMovements) {
         this.possibleMovements = possibleMovements;
     }
+    public String getPossibleMovements() {return possibleMovements;}
 
     private boolean isVisited(ArrayList<MoveBranch> allBranches, String stepsTaken, int xPos, int yPos) {
         for (MoveBranch branch : allBranches) {
@@ -36,7 +37,8 @@ public class MoveBranch {
         for (int i = 0; i < possibleMovements.length(); i++) {
             System.out.println(possibleMovements);
             Scout sentScout = new Scout(stepsTaken, xPos, yPos, possibleMovements.substring(i, i+1));
-            sentScout.search();
+            sentScout.move(Main.getMaze());
+            sentScout.search(this);
             results[i] = sentScout.getResults();
             System.out.println(Arrays.toString(results[i]));
             contPaths.add(sentScout.getNearPaths());
@@ -54,9 +56,11 @@ public class MoveBranch {
 
         // check if the spot has already been visited
         for (int i = 0; i < allStepsTaken.size(); i++) {
+            System.out.println("Res: " + results[i][2]);
             if (results[i][2] > 0 && !isVisited(allBranches, allStepsTaken.get(i), results[i][0], results[i][1])) {
                 MoveBranch branchToAdd = new MoveBranch(allStepsTaken.get(i), results[i][0], results[i][1]);
                 allBranches.add(branchToAdd);
+                branchToAdd.possibleMovements = contPaths.get(i);
             } else if (results[i][2] == -10) {
                 winning = true;
             }

@@ -1,14 +1,15 @@
 import java.util.Arrays;
 
 public class Scout {
-    String stepsTaken;
-    int xPos;
-    int yPos;
-    String initAngle;
-    String currentDir;
-    String nearPaths;
+    private String stepsTaken;
+    private int xPos;
+    private int yPos;
+    private String initAngle;
+    private String currentDir;
+    private String nearPaths;
+    private String possibleResults;
 
-    int[] results;
+    private int[] results;
 
     public Scout(String stepsTaken, int xPos, int yPos, String startingDir) {
         this.stepsTaken = stepsTaken;
@@ -16,7 +17,6 @@ public class Scout {
         this.yPos = yPos;
         initAngle = startingDir;
         currentDir = initAngle;
-        search();
     }
 
     private boolean hasWon(String[][] maze) {
@@ -32,13 +32,17 @@ public class Scout {
         String possibles = "";
         if (yPos != 0 && maze[yPos-1][xPos].equals(".")) {
             possibles += "U";
-        } else if (yPos != maze.length-1 && maze[yPos+1][xPos].equals(".")) {
+        }
+        if (yPos != maze.length-1 && maze[yPos+1][xPos].equals(".")) {
             possibles += "D";
-        } else if (xPos != 0 && maze[yPos][xPos-1].equals(".")) {
+        }
+        if (xPos != 0 && maze[yPos][xPos-1].equals(".")) {
             possibles += "L";
-        } else if (xPos != maze[0].length-1 && maze[yPos][xPos+1].equals(".")) {
+        }
+        if (xPos != maze[0].length-1 && maze[yPos][xPos+1].equals(".")) {
             possibles += "R";
         }
+//        System.out.println("Possibles: " + possibles);
         int removeInd = 0;
         if (currentDir.contains("U")) {
             removeInd = possibles.indexOf("D");
@@ -52,7 +56,7 @@ public class Scout {
         if (removeInd != -1) {
             possibles = possibles.substring(0, removeInd) + possibles.substring(removeInd+1);
         }
-
+        // System.out.println("NewPossib" + possibles);
         return possibles;
     }
 
@@ -60,43 +64,61 @@ public class Scout {
         return getPossibleMoves(currentDir, maze, xPos, yPos).length();
     }
 
-    private boolean move(String[][] maze) {
-        if (currentDir.equals("U") && yPos != 0 && maze[yPos-1][xPos].equals("#")) {
+    public boolean move(String[][] maze) {
+        if (currentDir.equals("U") && yPos != 0 && !maze[yPos-1][xPos].equals("#")) {
             yPos--;
+            stepsTaken += "U";
             return true;
-        } else if (currentDir.equals("D") && yPos != maze.length-1 && maze[yPos+1][xPos].equals("#")) {
+        } else if (currentDir.equals("D") && yPos != maze.length-1 && !maze[yPos+1][xPos].equals("#")) {
             yPos++;
+            stepsTaken += "D";
             return true;
-        } else if (currentDir.equals("R") && xPos != maze.length-1 && maze[yPos][xPos+1].equals("#")) {
+        } else if (currentDir.equals("R") && xPos != maze.length-1 && !maze[yPos][xPos+1].equals("#")) {
             xPos++;
+            stepsTaken += "R";
             return true;
-        } else if (currentDir.equals("L") && xPos != 0 && maze[yPos][xPos-1].equals("#")) {
+        } else if (currentDir.equals("L") && xPos != 0 && !maze[yPos][xPos-1].equals("#")) {
             xPos--;
+            stepsTaken += "L";
             return true;
         }
         return false;
     }
 
-    public void search() {
-        this.results = new int[3];
+    private void moveCycle() {
         String[][] maze = Main.getMaze();
-        String possibleResults = getPossibleMoves(currentDir, maze, xPos, yPos);
         boolean movingSuccessful = true;
 
-        while (possiblePaths(maze) == 1 && movingSuccessful) {
+        while (possibleResults.length() == 1 && movingSuccessful) {
             currentDir = getPossibleMoves(currentDir, maze, xPos, yPos);
+            System.out.println(currentDir);
             movingSuccessful = move(maze);
-
+            System.out.println(movingSuccessful);
             possibleResults = getPossibleMoves(currentDir, maze, xPos, yPos);
-            for (String[] strings : maze) {
-                for (String spot : strings) {
-                    System.out.print(spot);
+            for (int r = 0; r < maze.length; r++) {
+                for (int c = 0; c < maze[r].length; c++) {
+                    if (r == yPos && c == xPos) {
+                        System.out.print("O");
+                    } else {
+                        System.out.print(maze[r][c]);
+                    }
                 }
                 System.out.println();
             }
             System.out.println(xPos + ", " + yPos);
             System.out.println(currentDir);
+            System.out.println("EndLoop");
         }
+    }
+
+    public void search(MoveBranch currBranch) {
+        this.results = new int[3];
+
+        possibleResults = currBranch.getPossibleMovements();
+        System.out.println("possibleRes: " + possibleResults);
+        String[][] maze = Main.getMaze();
+
+        moveCycle();
 
         results[0] = xPos;
         results[1] = yPos;
