@@ -35,7 +35,7 @@ public class MoveBranch {
         ArrayList<String> allStepsTaken = new ArrayList<String>();
         ArrayList<MoveBranch> newBranches = new ArrayList<MoveBranch>();
         for (int i = 0; i < possibleMovements.length(); i++) {
-            System.out.println(possibleMovements);
+            System.out.println("New Scout Dir: " + possibleMovements.substring(i, i+1));
             Scout sentScout = new Scout(stepsTaken, xPos, yPos, possibleMovements.substring(i, i+1));
             sentScout.move(Main.getMaze());
             sentScout.search(this);
@@ -63,6 +63,7 @@ public class MoveBranch {
                 branchToAdd.possibleMovements = contPaths.get(i);
             } else if (results[i][2] == -10) {
                 winning = true;
+                stepsTaken = allStepsTaken.get(i);
             }
         }
         checked = true;
