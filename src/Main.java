@@ -14,7 +14,7 @@ public class Main {
         ArrayList<MoveBranch> branches = new ArrayList<MoveBranch>();
 
         branches.add(new MoveBranch("", 0, 0));
-        branches.get(0).setPossibleMoves(Scout.getPossibleMoves("U", maze, 0, 0));
+        branches.get(0).setPossibleMoves(Scout.getAllMoves(maze, 0, 0));
         for (int i = 0; i < branches.size(); i++) {
             System.out.println("-----Branch " + (i+1) + "-----");
             branches.get(i).testBranchMovement(branches);

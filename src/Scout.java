@@ -26,7 +26,7 @@ public class Scout {
         return false;
     }
 
-    public static String getPossibleMoves(String currentDir, String [][] maze, int xPos, int yPos) {
+    public static String getAllMoves(String[][] maze, int xPos, int yPos) {
         String possibles = "";
         if (yPos != 0 && maze[yPos-1][xPos].equals(".")) {
             possibles += "U";
@@ -40,6 +40,11 @@ public class Scout {
         if (xPos != maze[0].length-1 && maze[yPos][xPos+1].equals(".")) {
             possibles += "R";
         }
+        return possibles;
+    }
+
+    public static String getPossibleMoves(String currentDir, String [][] maze, int xPos, int yPos) {
+        String possibles = getAllMoves(maze, xPos, yPos);
 //        System.out.println("Possibles: " + possibles);
         int removeInd = 0;
 
