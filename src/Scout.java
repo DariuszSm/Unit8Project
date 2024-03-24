@@ -89,6 +89,20 @@ public class Scout {
         return false;
     }
 
+    private void printMaze() {
+        String[][] maze = Main.getMaze();
+        for (int r = 0; r < maze.length; r++) {
+            for (int c = 0; c < maze[r].length; c++) {
+                if (r == yPos && c == xPos) {
+                    System.out.print("O");
+                } else {
+                    System.out.print(maze[r][c]);
+                }
+            }
+            System.out.println();
+        }
+    }
+
     private void moveCycle() {
         String[][] maze = Main.getMaze();
         boolean movingSuccessful = true;
@@ -107,16 +121,7 @@ public class Scout {
 
             System.out.println(movingSuccessful);
 
-            for (int r = 0; r < maze.length; r++) {
-                for (int c = 0; c < maze[r].length; c++) {
-                    if (r == yPos && c == xPos) {
-                        System.out.print("O");
-                    } else {
-                        System.out.print(maze[r][c]);
-                    }
-                }
-                System.out.println();
-            }
+            printMaze();
 
             possibleResults = getPossibleMoves(currentDir, maze, xPos, yPos);
             System.out.println(xPos + ", " + yPos);
