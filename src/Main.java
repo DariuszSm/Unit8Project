@@ -9,6 +9,38 @@ public class Main {
         return maze;
     }
 
+    public static String getCoordPoint(int y, int x) {
+        return "(" + y + ", " + x + ")";
+    }
+
+    public static String turnsToAnswerFormat(String moves) {
+        String assemble = "";
+        if (moves.isEmpty()) {
+            return assemble;
+        }
+
+        int x = 0;
+        int y = 0;
+
+        assemble += getCoordPoint(y, x);
+        int i = 0;
+        while (i+1 <= moves.length()) {
+            assemble += " ---> ";
+            if (moves.charAt(i) == 'U') {
+                y--;
+            } else if (moves.charAt(i) == 'D'){
+                y++;
+            } else if (moves.charAt(i) == 'R'){
+                x++;
+            } else if (moves.charAt(i) == 'L'){
+                x--;
+            }
+            assemble += getCoordPoint(y, x);
+            i++;
+        }
+        return assemble;
+    }
+
     public static void main(String[] args) {
         maze = MazeSolve.getMaze("input/maze.txt");
         ArrayList<MoveBranch> branches = new ArrayList<MoveBranch>();
@@ -21,11 +53,15 @@ public class Main {
         }
 
         for (MoveBranch branch : branches) {
-//            if (branch.hasWon()) {
-//                System.out.println(branch.stepsTaken);
-//                System.out.println("Steps taken: " + branch.stepsTaken.length());
-//            }
-            System.out.println(branch);
+            if (branch.hasWon()) {
+                String formatAnswer = turnsToAnswerFormat(branch.stepsTaken);
+                System.out.println("Answer (in turns): " + branch.stepsTaken);
+                System.out.println("Answer (in Mr. Das's super amazing format that I have mixed feelings for): " + formatAnswer);
+                System.out.println("Steps taken: " + branch.stepsTaken.length());
+                System.out.println("Passes short maze?: " + formatAnswer.equals(Answer.shortAnswer));
+                System.out.println("Passes super maze?: " + formatAnswer.equals(Answer.superAnswer));
+
+            }
         }
 
     }

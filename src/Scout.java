@@ -121,7 +121,7 @@ public class Scout {
 
             System.out.println(movingSuccessful);
 
-            printMaze();
+            // printMaze();
 
             possibleResults = getPossibleMoves(currentDir, maze, xPos, yPos);
             System.out.println(xPos + ", " + yPos);
